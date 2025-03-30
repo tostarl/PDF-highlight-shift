@@ -2,8 +2,10 @@ from flask import Flask, request, jsonify, send_file, render_template
 import os
 from pdf_processor import replace_highlight_colors_hex
 from werkzeug.utils import secure_filename
-
-app = Flask(__name__)
+app = Flask(__name__, static_folder=None)  # 禁用 Flask 自动寻找 static 目录
+@app.route("/")
+def home():
+    return "Hello, Flask is running!"
 UPLOAD_FOLDER = "uploads"
 OUTPUT_FOLDER = "outputs"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -43,4 +45,4 @@ def upload_file():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
+    app.run(debug=True)
